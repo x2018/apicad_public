@@ -1,0 +1,15 @@
+# Ocaml build
+_build
+
+# Python file
+__pycache__
+.mypy_cache
+.pytest_cache
+
+# Misc
+*.DS_Store
+.vscode
+
+# Rust
+/target
+Cargo.lock

@@ -1,0 +1,25 @@
+# Python cache files
+__pycache__
+.mypy_cache
+.pytest_cache
+
+# Compiled files
+*.o
+*.bc
+*.ll
+*.out
+
+# Doc files
+doc_files
+doc_features
+
+# Temporary files
+database
+test*
+*example
+tmp_*
+old*
+
+# Misc
+*.DS_Store
+.vscode

@@ -1,0 +1,34 @@
+#!/bin/sh
+# $1 - full path of target file
+# $2 - the name ID of the target file to cope with duplicate names
+# $3 - the output dir to store .bc files
+tmp_folder="a2bc_temp"
+target_folder="$3" # args.bcdir
+ar="$1" # full path not just a base name
+dir=$(dirname "$ar")
+base=$(basename "$ar" .a)
+bca_tmp="$dir/$base.bca"
+bca=$base.a"_"$2".bca"
+abc=$base.a"_"$2".bc"
+
+echo "Making temporary folder"
+mkdir -p $tmp_folder
+
+echo "Generating $tmp_folder/$bca from $ar"
+extract-bc $ar # generate *.bca
+mv $bca_tmp $tmp_folder/$bca # move .bca to tmp_folder
+
+echo "Going into the temp folder"
+cd $tmp_folder
+
+echo "Unarchiving $bca" # extract *.o.bc
+llvm-ar x $bca
+
+echo "Linking all bc files into $abc" # generate *.a.bc
+find . -iname "*.o.bc" -print0 | xargs -0 llvm-link -o $abc
+
+cd ../
+
+mv $tmp_folder/$abc $target_folder
+
+rm -rf $tmp_folder
